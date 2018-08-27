@@ -1,7 +1,13 @@
 import * as React from "react"
 
+export interface ContextualProps<T> {
+  context?: T
+}
+
 export function contextual<T>(initialValue: T) {
-  return function <P extends { context?: T }, S>(WrappedComponent: React.ComponentClass<P>): React.ComponentClass<P, S> {
+  return function <P extends ContextualProps<T>, S>(
+    WrappedComponent: React.ComponentClass<P>
+  ): React.ComponentClass<P, S> {
     const {Provider, Consumer} = React.createContext(initialValue)
 
     Object.defineProperty(WrappedComponent.prototype, "ctx", {
