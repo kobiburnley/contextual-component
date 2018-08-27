@@ -1,7 +1,7 @@
 import * as React from "react"
 
 export function contextual<T>(initialValue: T) {
-  return function <P extends { context?: T }>(WrappedComponent: React.ComponentClass<P>) {
+  return function <P extends { context?: T }, S>(WrappedComponent: React.ComponentClass<P>): React.ComponentClass<P, S> {
     const {Provider, Consumer} = React.createContext(initialValue)
 
     Object.defineProperty(WrappedComponent.prototype, "ctx", {
@@ -10,7 +10,7 @@ export function contextual<T>(initialValue: T) {
       }
     })
 
-    return class extends React.PureComponent<P> {
+    return class extends React.PureComponent<P, S> {
       static Provider = Provider
       static Consumer = Consumer
 
