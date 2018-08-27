@@ -6,7 +6,7 @@ export interface ContextualProps<T> {
 
 export function contextual<T>(initialValue: T) {
   return function <P extends ContextualProps<T>, S>(
-    WrappedComponent: React.ComponentClass<P>
+    WrappedComponent: React.ComponentClass<P, S>
   ) {
     const {Provider, Consumer} = React.createContext(initialValue)
 
