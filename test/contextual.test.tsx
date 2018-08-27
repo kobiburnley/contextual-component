@@ -6,10 +6,7 @@ import {createLinkComponent, LinkContext} from "./link"
 
 const WrappedLink = createLinkComponent()
 
-export const Link = contextual<LinkContext>({
-  navTo: () => {
-  }
-})<{ path: string, context?: any }>(WrappedLink)
+export const Link = contextual<LinkContext>({navTo: () => {}})(WrappedLink)
 
 const service = {
   navTo: (path: string) => {
