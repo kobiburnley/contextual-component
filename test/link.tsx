@@ -19,7 +19,7 @@ export function createLinkComponent() {
     }
 
     render() {
-      const {path, ...props} = this.props
+      const {path, context, ...props} = this.props
       return <a href={path} onClick={this.handleClick} {...props}/>
     }
   }
