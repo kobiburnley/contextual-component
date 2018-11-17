@@ -11,13 +11,6 @@ export function contextualHook<T>() {
   return function <P extends ContextualProps<T>>(
     WrappedComponent: React.ComponentType<P>
   ) {
-
-    Object.defineProperty(WrappedComponent.prototype, "ctx", {
-      get() {
-        return this.props.context
-      }
-    })
-
     const FunctionComponent: ContextualFunctionComponent<P, T> = function (props: P) {
       if (FunctionComponent.Consumer == null) {
         throw new TypeError("Consumer must be set from outside")
