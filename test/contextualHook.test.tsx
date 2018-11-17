@@ -1,6 +1,7 @@
 import {expect} from "chai"
 import * as React from "react"
 import {create} from "react-test-renderer"
+import {contextual} from "../src/contextual"
 import {contextualHook} from "../src/contextualHook"
 import {Button, ButtonIO} from "./button"
 import {createLinkComponent, LinkContext} from "./link"
@@ -19,13 +20,13 @@ describe("contextualHook.test", function () {
     const WrappedLink = createLinkComponent()
     const Link = contextualHook<LinkContext>()(WrappedLink)
 
-    const {Consumer, Provider} = React.createContext(service)
-    Link.Consumer = Consumer
-    Button.Consumer = Consumer
+    const Context = React.createContext(service)
+    Link.Context = Context as any
+    Button.Consumer = Context.Consumer
 
     class App extends React.PureComponent {
       render() {
-        return <Provider value={service}>
+        return <Context.Provider value={service}>
           <Link path="/where-to">
             <Button>
               One
@@ -34,7 +35,7 @@ describe("contextualHook.test", function () {
           <Button>
             Two
           </Button>
-        </Provider>
+        </Context.Provider>
       }
     }
 
@@ -44,5 +45,30 @@ describe("contextualHook.test", function () {
     expect(buttonInstances.length).to.eq(2)
     expect(linkInstance.instance.props.context).to.eq(service)
     expect(buttonInstances.every(e => e.instance.props.context === service)).to.eq(true)
+  })
+
+  it("should throw in render if context not set", () => {
+    const WrappedLink = createLinkComponent()
+    const Link = contextualHook<LinkContext>()(WrappedLink)
+
+    const Context = React.createContext(service)
+    Button.Consumer = Context.Consumer
+
+    class App extends React.PureComponent {
+      render() {
+        return <Context.Provider value={service}>
+          <Link path="/where-to">
+            <Button>
+              One
+            </Button>
+          </Link>
+          <Button>
+            Two
+          </Button>
+        </Context.Provider>
+      }
+    }
+
+    expect(() => create(<App/>)).to.throw("Context must be set from outside")
   })
 })
