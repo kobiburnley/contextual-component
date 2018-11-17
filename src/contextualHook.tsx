@@ -1,23 +1,21 @@
-import {FunctionComponent} from "react"
 import * as React from "react"
 
 export interface ContextualProps<T> {
   context?: T
 }
 
-export type ContextualFunctionComponent<P, T> = React.FunctionComponent<P> & { Consumer?: React.Consumer<T> }
+export type ContextualFunctionComponent<P, T> = React.FunctionComponent<P> & { Context?: React.Context<T> }
 
 export function contextualHook<T>() {
   return function <P extends ContextualProps<T>>(
     WrappedComponent: React.ComponentType<P>
   ) {
     const FunctionComponent: ContextualFunctionComponent<P, T> = function (props: P) {
-      if (FunctionComponent.Consumer == null) {
-        throw new TypeError("Consumer must be set from outside")
+      if (FunctionComponent.Context == null) {
+        throw new TypeError("Context must be set from outside")
       }
-      return <FunctionComponent.Consumer>
-        {(context: T) => <WrappedComponent context={context} {...props}/>}
-      </FunctionComponent.Consumer>
+      const context = React.useContext(FunctionComponent.Context)
+      return <WrappedComponent context={context} {...props}/>
     }
 
     return FunctionComponent
