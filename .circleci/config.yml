@@ -6,7 +6,7 @@ jobs:
     steps:
       - add_ssh_keys:
           fingerprints:
-            - "15:97:81:6b:69:3c:a2:83:a9:1c:ac:11:c0:9d:0f:ec"
+            - "7a:1f:5f:b6:c9:ee:0c:a3:92:ef:a8:7f:16:18:9f:31"
       - checkout
       - run:
           name: Install
@@ -29,7 +29,7 @@ jobs:
             git config --global user.name CircleCI
             echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
             npm run lock
-            if test "$CIRCLE_BRANCH" = "master"; then npm run cd; else git push origin $CIRCLE_BRANCH; fi
+#            if test "$CIRCLE_BRANCH" = "master"; then npm run cd; else git push origin $CIRCLE_BRANCH; fi
 workflows:
   version: 2
   build_and_publish:
