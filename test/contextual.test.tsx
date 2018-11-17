@@ -81,4 +81,31 @@ describe("contextual", function () {
     expect(linkInstance.instance.ctx).to.eq(service)
     expect(buttonInstances.every(e => e.instance.ctx === service)).to.eq(true)
   })
+
+  it("should throw in render if consumer not set", () => {
+    const WrappedLink = createLinkComponent()
+    const Link = contextual<LinkContext>({
+      navTo: () => {
+      }
+    }, false)(WrappedLink)
+
+    const {Consumer, Provider} = React.createContext(service)
+
+    class App extends React.PureComponent {
+      render() {
+        return <Provider value={service}>
+          <Link path="/where-to">
+            <Button>
+              One
+            </Button>
+          </Link>
+          <Button>
+            Two
+          </Button>
+        </Provider>
+      }
+    }
+
+    expect(() => create(<App/>)).to.throw("Consumer must be set from outside")
+  })
 })
