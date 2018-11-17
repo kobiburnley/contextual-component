@@ -8,18 +8,20 @@ export interface LinkContext {
 
 export interface LinkProps {
   path: string,
-  context?: any
+  context?: LinkContext
 }
 
 export function createLinkComponent() {
   return class Link extends React.PureComponent<LinkProps> {
-    ctx!: LinkContext
+    get ctx() {
+      return this.props.context!
+    }
 
     handleClick = () => {
     }
 
     render() {
-      const {path, ...props} = this.props
+      const {path, context, ...props} = this.props
       return <a href={path} onClick={this.handleClick} {...props}/>
     }
   }

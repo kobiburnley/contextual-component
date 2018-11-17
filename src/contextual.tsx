@@ -4,27 +4,30 @@ export interface ContextualProps<T> {
   context?: T
 }
 
-export function contextual<T>(initialValue: T) {
-  return function <P extends ContextualProps<T>, S>(
-    WrappedComponent: React.ComponentClass<P, S>
+export function contextual<T>(initialValue: T, localContext = true) {
+  return function <P extends ContextualProps<T>>(
+    WrappedComponent: React.ComponentType<P>
   ) {
-    const {Provider, Consumer} = React.createContext(initialValue)
 
-    Object.defineProperty(WrappedComponent.prototype, "ctx", {
-      get() {
-        return this.props.context
-      }
-    })
+    const {Provider, Consumer} = localContext ? React.createContext(initialValue) : {
+      Provider: undefined,
+      Consumer: undefined
+    }
 
-    return class extends React.PureComponent<P, S> {
+    const ClassComponent = class extends React.PureComponent<P> {
       static Provider = Provider
       static Consumer = Consumer
 
       render() {
-        return <Consumer>
+        if (ClassComponent.Consumer == null) {
+          throw new TypeError("Consumer must be set from outside")
+        }
+        return <ClassComponent.Consumer>
           {(context: T) => <WrappedComponent context={context} {...this.props}/>}
-        </Consumer>
+        </ClassComponent.Consumer>
       }
     }
+
+    return ClassComponent
   }
 }
