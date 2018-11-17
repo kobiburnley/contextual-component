@@ -25,9 +25,9 @@
   "author": "",
   "license": "ISC",
   "peerDependencies": {
-    "tslib": "^1.9.3",
+    "tslib": "*",
     "prop-types": "^15.x",
-    "react": "^16.2.x"
+    "react": "^16.x"
   },
   "devDependencies": {
     "@types/chai": "^4.1.4",
