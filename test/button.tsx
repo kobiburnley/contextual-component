@@ -13,7 +13,9 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export class ButtonIO extends React.PureComponent<ButtonProps> {
-  ctx!: ButtonContext
+  get ctx() {
+    return this.props.context!
+  }
 
   render() {
     const {context, ...props} = this.props
