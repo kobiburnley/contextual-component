@@ -4,8 +4,10 @@ import {create} from "react-test-renderer"
 import {CombineProviders, Providers} from "../src/combineProviders"
 import {contextual} from "../src/contextual"
 import {createConsumer} from "../src/createConsumer"
-import {Button, ButtonIO} from "./button"
+import {ButtonContext, Button} from "./button"
 import {createLinkComponent, LinkContext} from "./link"
+
+export const MyButton = contextual(null! as ButtonContext, true)(Button)
 
 const service = {
   navTo: (path: string) => {
@@ -27,23 +29,23 @@ describe("contextual", function () {
 
     class App extends React.PureComponent {
       render() {
-        return <CombineProviders providers={[Link.Provider, Button.Provider] as Providers<typeof service>}
+        return <CombineProviders providers={[Link.Provider, MyButton.Provider] as Providers<typeof service>}
                                  value={service}>
           <Link path="/where-to">
-            <Button>
+            <MyButton>
               One
-            </Button>
+            </MyButton>
           </Link>
-          <Button>
+          <MyButton>
             Two
-          </Button>
+          </MyButton>
         </CombineProviders>
       }
     }
 
     const renderer = create(<App/>)
     const linkInstance = renderer.root.findByType(WrappedLink)
-    const buttonInstances = renderer.root.findAll(node => node.instance instanceof ButtonIO)
+    const buttonInstances = renderer.root.findAll(node => node.instance instanceof Button)
     expect(buttonInstances.length).to.eq(2)
     expect(linkInstance.instance.ctx).to.eq(service)
     expect(buttonInstances.every(e => e.instance.ctx === service)).to.eq(true)
@@ -58,26 +60,26 @@ describe("contextual", function () {
 
     const {Consumer, Provider} = React.createContext(service)
     Link.Consumer = Consumer
-    Button.Consumer = Consumer
+    MyButton.Consumer = Consumer
 
     class App extends React.PureComponent {
       render() {
         return <Provider value={service}>
           <Link path="/where-to">
-            <Button>
+            <MyButton>
               One
-            </Button>
+            </MyButton>
           </Link>
-          <Button>
+          <MyButton>
             Two
-          </Button>
+          </MyButton>
         </Provider>
       }
     }
 
     const renderer = create(<App/>)
     const linkInstance = renderer.root.findByType(WrappedLink)
-    const buttonInstances = renderer.root.findAll(node => node.instance instanceof ButtonIO)
+    const buttonInstances = renderer.root.findAll(node => node.instance instanceof Button)
     expect(buttonInstances.length).to.eq(2)
     expect(linkInstance.instance.ctx).to.eq(service)
     expect(buttonInstances.every(e => e.instance.ctx === service)).to.eq(true)
@@ -96,13 +98,13 @@ describe("contextual", function () {
       render() {
         return <Provider value={service}>
           <Link path="/where-to">
-            <Button>
+            <MyButton>
               One
-            </Button>
+            </MyButton>
           </Link>
-          <Button>
+          <MyButton>
             Two
-          </Button>
+          </MyButton>
         </Provider>
       }
     }
@@ -112,20 +114,20 @@ describe("contextual", function () {
 
   it("create consumer", () => {
     const {Consumer, Provider} = React.createContext(service)
-    Button.Consumer = createConsumer(Consumer, value => ({theme: value.theme}))
+    MyButton.Consumer = createConsumer(Consumer, value => ({theme: value.theme}))
 
     class App extends React.PureComponent {
       render() {
         return <Provider value={service}>
-          <Button>
+          <MyButton>
             Two
-          </Button>
+          </MyButton>
         </Provider>
       }
     }
 
     const renderer = create(<App/>)
-    const buttonInstances = renderer.root.findAll(node => node.instance instanceof ButtonIO)
+    const buttonInstances = renderer.root.findAll(node => node.instance instanceof Button)
     expect(buttonInstances.every(e => e.instance.ctx.theme === service.theme)).to.eq(true)
   })
 })

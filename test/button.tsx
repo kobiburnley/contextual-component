@@ -1,7 +1,6 @@
 import * as React from "react"
 import {ButtonHTMLAttributes} from "react"
-import {contextual} from "../src/contextual"
-
+import * as assert from "assert"
 export interface ButtonContext {
   theme: {
     color: string
@@ -12,7 +11,12 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   context?: ButtonContext
 }
 
-export class ButtonIO extends React.PureComponent<ButtonProps> {
+export class Button extends React.PureComponent<ButtonProps> {
+  constructor(props: ButtonProps) {
+    super(props)
+    assert(props.context != null)
+  }
+
   get ctx() {
     return this.props.context!
   }
@@ -23,4 +27,3 @@ export class ButtonIO extends React.PureComponent<ButtonProps> {
   }
 }
 
-export const Button = contextual(null! as ButtonContext)(ButtonIO)
