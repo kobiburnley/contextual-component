@@ -1,10 +1,11 @@
 import * as React from "react"
+import {ConsumerLike} from "./consumerLike"
 
 export interface ContextualProps<T> {
   context?: T
 }
 
-export function contextual<T>(initialValue: T, localContext = true) {
+export function contextual<T>(initialValue: T, localContext = false) {
   return function <P extends ContextualProps<T>>(
     WrappedComponent: React.ComponentType<P>
   ) {
@@ -16,7 +17,7 @@ export function contextual<T>(initialValue: T, localContext = true) {
 
     const ClassComponent = class extends React.PureComponent<P> {
       static Provider = Provider
-      static Consumer = Consumer
+      static Consumer: ConsumerLike<T> | undefined = Consumer
 
       render() {
         if (ClassComponent.Consumer == null) {

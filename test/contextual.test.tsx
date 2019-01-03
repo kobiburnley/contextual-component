@@ -3,6 +3,7 @@ import * as React from "react"
 import {create} from "react-test-renderer"
 import {CombineProviders, Providers} from "../src/combineProviders"
 import {contextual} from "../src/contextual"
+import {createConsumer} from "../src/createConsumer"
 import {Button, ButtonIO} from "./button"
 import {createLinkComponent, LinkContext} from "./link"
 
@@ -22,7 +23,7 @@ describe("contextual", function () {
     const Link = contextual<LinkContext>({
       navTo: () => {
       }
-    })(WrappedLink)
+    }, true)(WrappedLink)
 
     class App extends React.PureComponent {
       render() {
@@ -53,7 +54,7 @@ describe("contextual", function () {
     const Link = contextual<LinkContext>({
       navTo: () => {
       }
-    }, false)(WrappedLink)
+    })(WrappedLink)
 
     const {Consumer, Provider} = React.createContext(service)
     Link.Consumer = Consumer
@@ -107,5 +108,24 @@ describe("contextual", function () {
     }
 
     expect(() => create(<App/>)).to.throw("Consumer must be set from outside")
+  })
+
+  it("create consumer", () => {
+    const {Consumer, Provider} = React.createContext(service)
+    Button.Consumer = createConsumer(Consumer, value => ({theme: value.theme}))
+
+    class App extends React.PureComponent {
+      render() {
+        return <Provider value={service}>
+          <Button>
+            Two
+          </Button>
+        </Provider>
+      }
+    }
+
+    const renderer = create(<App/>)
+    const buttonInstances = renderer.root.findAll(node => node.instance instanceof ButtonIO)
+    expect(buttonInstances.every(e => e.instance.ctx.theme === service.theme)).to.eq(true)
   })
 })
