@@ -26,4 +26,3 @@ export class Button extends React.PureComponent<ButtonProps> {
     return <button style={{backgroundColor: this.ctx.theme.color}} {...props} />
   }
 }
-
