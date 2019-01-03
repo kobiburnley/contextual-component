@@ -3,8 +3,10 @@ import * as React from "react"
 import {create} from "react-test-renderer"
 import {contextual} from "../src/contextual"
 import {contextualHook} from "../src/contextualHook"
-import {Button, ButtonIO} from "./button"
+import {Button, ButtonContext} from "./button"
 import {createLinkComponent, LinkContext} from "./link"
+
+export const MyButton = contextual(null! as ButtonContext, true)(Button)
 
 const service = {
   navTo: (path: string) => {
@@ -22,26 +24,26 @@ describe("contextualHook.test", function () {
 
     const Context = React.createContext(service)
     Link.Context = Context as any
-    Button.Consumer = Context.Consumer
+    MyButton.Consumer = Context.Consumer
 
     class App extends React.PureComponent {
       render() {
         return <Context.Provider value={service}>
           <Link path="/where-to">
-            <Button>
+            <MyButton>
               One
-            </Button>
+            </MyButton>
           </Link>
-          <Button>
+          <MyButton>
             Two
-          </Button>
+          </MyButton>
         </Context.Provider>
       }
     }
 
     const renderer = create(<App/>)
     const linkInstance = renderer.root.findByType(WrappedLink)
-    const buttonInstances = renderer.root.findAll(node => node.instance instanceof ButtonIO)
+    const buttonInstances = renderer.root.findAll(node => node.instance instanceof Button)
     expect(buttonInstances.length).to.eq(2)
     expect(linkInstance.instance.props.context).to.eq(service)
     expect(buttonInstances.every(e => e.instance.props.context === service)).to.eq(true)
@@ -52,15 +54,15 @@ describe("contextualHook.test", function () {
     const Link = contextualHook<LinkContext>()(WrappedLink)
 
     const Context = React.createContext(service)
-    Button.Consumer = Context.Consumer
+    MyButton.Consumer = Context.Consumer
 
     class App extends React.PureComponent {
       render() {
         return <Context.Provider value={service}>
           <Link path="/where-to">
-            <Button>
+            <MyButton>
               One
-            </Button>
+            </MyButton>
           </Link>
           <Button>
             Two
