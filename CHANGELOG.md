@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.0.0"></a>
+# [3.0.0](https://github.com/kobiburnley/contextual-component/compare/v2.2.0...v3.0.0) (2019-03-05)
+
+
+### Features
+
+* **contextualLegacy:** multiple contexts ([6f232b6](https://github.com/kobiburnley/contextual-component/commit/6f232b6))
+
+
+### BREAKING CHANGES
+
+* **contextualLegacy:** ctx property is no longer defined on instance
+
+
+
 <a name="2.2.0"></a>
 # [2.2.0](https://github.com/kobiburnley/contextual-component/compare/v2.1.0...v2.2.0) (2019-01-03)
 
