@@ -1,15 +1,12 @@
 import * as propTypes from "prop-types"
 import * as React from "react"
 
-export function contextualLegacy(name: string) {
+export function contextualLegacy(...names: string[]) {
   return function <P, S>(WrappedComponent: React.ComponentClass<P, S>) {
     WrappedComponent.contextTypes = WrappedComponent.contextTypes || {}
-    WrappedComponent.contextTypes[name] = propTypes.any
-    Object.defineProperty(WrappedComponent.prototype, "ctx", {
-      get() {
-        return this.context[name]
-      }
-    })
+    for (const name of names) {
+      WrappedComponent.contextTypes[name] = propTypes.any
+    }
     return WrappedComponent
   }
 }

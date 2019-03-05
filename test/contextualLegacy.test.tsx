@@ -32,6 +32,6 @@ describe("contextualLegacy.test", function () {
   it("should pass context", () => {
     const renderer = create(<App/>)
     const linkInstance = renderer.root.findByType(WrappedLink) as any
-    expect(linkInstance.instance.ctx).to.eq(service)
+    expect(linkInstance.instance.context.service).to.eq(service)
   })
 })
