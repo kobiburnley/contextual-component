@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.0.0"></a>
+# [4.0.0](https://github.com/kobiburnley/contextual-component/compare/v3.0.0...v4.0.0) (2019-03-07)
+
+
+### Features
+
+* contextual local ([#6](https://github.com/kobiburnley/contextual-component/issues/6)) ([abe8ea3](https://github.com/kobiburnley/contextual-component/commit/abe8ea3))
+
+
+### BREAKING CHANGES
+
+* localContext boolean is omitted in favor of another contextualLocal
+
+
+
 <a name="3.0.0"></a>
 # [3.0.0](https://github.com/kobiburnley/contextual-component/compare/v2.2.0...v3.0.0) (2019-03-05)
 
