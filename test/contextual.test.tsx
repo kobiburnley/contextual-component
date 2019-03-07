@@ -1,10 +1,9 @@
 import {expect} from "chai"
 import * as React from "react"
 import {create} from "react-test-renderer"
-import {CombineProviders, Providers} from "../src/combineProviders"
 import {contextual} from "../src/contextual"
 import {createConsumer} from "../src/createConsumer"
-import {ButtonContext, Button} from "./button"
+import {Button, ButtonContext} from "./button"
 import {createLinkComponent, LinkContext} from "./link"
 
 

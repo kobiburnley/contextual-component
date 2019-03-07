@@ -3,10 +3,10 @@ import * as React from "react"
 import {create} from "react-test-renderer"
 import {contextual} from "../src/contextual"
 import {contextualHook} from "../src/contextualHook"
-import {Button, ButtonContext} from "./button"
+import {Button} from "./button"
 import {createLinkComponent, LinkContext} from "./link"
 
-export const MyButton = contextual(null! as ButtonContext, true)(Button)
+export const MyButton = contextual()(Button)
 
 const service = {
   navTo: (path: string) => {
