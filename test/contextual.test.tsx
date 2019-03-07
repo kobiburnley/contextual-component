@@ -6,7 +6,6 @@ import {createConsumer} from "../src/createConsumer"
 import {Button, ButtonContext} from "./button"
 import {createLinkComponent, LinkContext} from "./link"
 
-
 const service = {
   navTo: (path: string) => {
     console.log("path changed to", path)
